@@ -1,4 +1,4 @@
-div#content.yt-live-chat-text-message-renderer:not(:hover) {
+yt-live-chat-text-message-renderer:not(:hover)>div#content {
     text-overflow: ellipsis !important;
     overflow: hidden !important;
     white-space: nowrap !important;
