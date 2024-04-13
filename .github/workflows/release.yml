@@ -22,9 +22,6 @@ jobs:
           echo "ZIPFILE_NAME_FIREFOX=${REPOSITORY_NAME}-${VERSION}-firefox.zip" >> $GITHUB_OUTPUT
           echo "TAG=v${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: remove tag if exists
-        run: git push --delete origin ${{ steps.variables.outputs.TAG }} || true
-
       - name: zip for chrome
         run: zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}" * -x browser_specific_settings.json
     
@@ -32,6 +29,8 @@ jobs:
         run: |
           jq -s add manifest.json browser_specific_settings.json > manifest.json
           zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
+
+      - run: gh release delete ${{ steps.variables.outputs.TAG }} --cleanup-tag --yes
 
       - uses: softprops/action-gh-release@v2
         with:
