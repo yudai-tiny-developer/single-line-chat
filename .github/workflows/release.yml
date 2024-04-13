@@ -32,7 +32,7 @@ jobs:
           jq -s add manifest.json browser_specific_settings.json > manifest.json
           zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
 
-      - run: gh release delete ${{ steps.variables.outputs.TAG }} --cleanup-tag --yes
+      - run: gh release delete ${{ steps.variables.outputs.TAG }} --cleanup-tag --yes || true
 
       - uses: softprops/action-gh-release@v2
         with:
