@@ -33,7 +33,7 @@ jobs:
           jq -s add manifest.json browser_specific_settings.json > manifest.json
           zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}
