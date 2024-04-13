@@ -9,10 +9,10 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - id: variables
         run: |
@@ -22,9 +22,6 @@ jobs:
           echo "ZIPFILE_NAME_FIREFOX=${REPOSITORY_NAME}-${VERSION}-firefox.zip" >> $GITHUB_OUTPUT
           echo "TAG=v${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: remove tag if exists
-        run: git push --delete origin ${{ steps.variables.outputs.TAG }} || true
-
       - name: zip for chrome
         run: zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}" * -x browser_specific_settings.json
     
@@ -33,6 +30,11 @@ jobs:
           jq -s add manifest.json browser_specific_settings.json > manifest.json
           zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
 
+      - name: remove release and tag if exists
+        run: |
+          gh release delete ${{ steps.variables.outputs.TAG }} --cleanup-tag --yes || true
+          git push --delete origin tag ${{ steps.variables.outputs.TAG }}
+
       - uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -40,3 +42,4 @@ jobs:
             ${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}
           tag_name: ${{ steps.variables.outputs.TAG }}
           generate_release_notes: true
+          make_latest: true
