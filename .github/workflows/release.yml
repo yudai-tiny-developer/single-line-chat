@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   Release:
@@ -22,10 +23,7 @@ jobs:
           echo "TAG=v${VERSION}" >> $GITHUB_OUTPUT
 
       - name: remove tag if exists
-        run: |
-          if git show-ref --tags --verify --quiet "refs/tags/${{ steps.variables.outputs.TAG }}"; then
-            exit 1
-          fi
+        run: git push --delete origin ${{ steps.variables.outputs.TAG }} || true
 
       - name: zip for chrome
         run: zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}" * -x browser_specific_settings.json
