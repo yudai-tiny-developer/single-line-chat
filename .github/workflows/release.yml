@@ -42,4 +42,3 @@ jobs:
             ${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}
           tag_name: ${{ steps.variables.outputs.TAG }}
           generate_release_notes: true
-          make_latest: true
