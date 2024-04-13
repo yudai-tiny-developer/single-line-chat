@@ -17,19 +17,28 @@ jobs:
         run: |
           REPOSITORY_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
           VERSION=$(cat manifest.json | jq -r .version)
-          echo "ZIPFILE_NAME=${REPOSITORY_NAME}-${VERSION}.zip" >> $GITHUB_OUTPUT
+          echo "ZIPFILE_NAME_CHROME=${REPOSITORY_NAME}-${VERSION}-chrome.zip" >> $GITHUB_OUTPUT
+          echo "ZIPFILE_NAME_FIREFOX=${REPOSITORY_NAME}-${VERSION}-firefox.zip" >> $GITHUB_OUTPUT
           echo "TAG=v${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: Fail if tag exists
+      - name: remove tag if exists
         run: |
           if git show-ref --tags --verify --quiet "refs/tags/${{ steps.variables.outputs.TAG }}"; then
             exit 1
           fi
 
-      - run: zip -r "${{ steps.variables.outputs.ZIPFILE_NAME }}" *
+      - name: zip for chrome
+        run: zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}" * -x browser_specific_settings.json
+    
+      - name: zip for firefox
+        run: |
+          jq -s add manifest.json browser_specific_settings.json > manifest.json
+          zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
 
       - uses: softprops/action-gh-release@v1
         with:
-          files: ${{ steps.variables.outputs.ZIPFILE_NAME }}
+          files: |
+            ${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}
+            ${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}
           tag_name: ${{ steps.variables.outputs.TAG }}
           generate_release_notes: true
