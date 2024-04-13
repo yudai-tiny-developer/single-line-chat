@@ -38,6 +38,5 @@ jobs:
           files: |
             ${{ steps.variables.outputs.ZIPFILE_NAME_CHROME }}
             ${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}
-          tag_name: ${{ steps.variables.outputs.TAG }}
           generate_release_notes: true
-          draft: false
+          make_latest: true
