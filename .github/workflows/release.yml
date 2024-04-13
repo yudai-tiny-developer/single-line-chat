@@ -27,7 +27,7 @@ jobs:
     
       - name: zip for firefox
         run: |
-          jq -s add manifest.json browser_specific_settings.json > manifest.json
+          jq -s add manifest.json browser_specific_settings.json | tee manifest.json
           zip -r "${{ steps.variables.outputs.ZIPFILE_NAME_FIREFOX }}" * -x browser_specific_settings.json
 
       - name: remove release and tag if exists
