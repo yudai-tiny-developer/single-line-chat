@@ -33,7 +33,7 @@ jobs:
       - name: remove release and tag if exists
         run: |
           gh release delete ${{ steps.variables.outputs.TAG }} --cleanup-tag --yes || true
-          git push --delete origin ${{ steps.variables.outputs.TAG }}
+          git push --delete origin tag ${{ steps.variables.outputs.TAG }} || true
 
       - uses: softprops/action-gh-release@v2
         with:
