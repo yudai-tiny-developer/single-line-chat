@@ -16,15 +16,15 @@ div#items>yt-live-chat-text-message-renderer:not(:hover) div#content {
     white-space: nowrap !important;
 }
 
-div#items>yt-live-chat-text-message-renderer:not(:has(yt-live-chat-author-badge-renderer[type="moderator"])):not(:hover) yt-img-shadow#author-photo {
+div#items>yt-live-chat-text-message-renderer:not(:hover) yt-img-shadow#author-photo {
     display: var(--single-line-chat-icon) !important;
 }
 
-div#items>yt-live-chat-text-message-renderer:not(:has(yt-live-chat-author-badge-renderer[type="moderator"])):not(:hover) span#author-name {
+div#items>yt-live-chat-text-message-renderer:not(:hover) span#author-name {
     display: var(--single-line-chat-name) !important;
 }
 
-div#items>yt-live-chat-text-message-renderer:not(:has(yt-live-chat-author-badge-renderer[type="moderator"])):not(:hover) span#chat-badges {
+div#items>yt-live-chat-text-message-renderer:not(:hover) span#chat-badges {
     display: var(--single-line-chat-badge) !important;
 }
 
@@ -40,11 +40,11 @@ div#items>yt-live-chat-text-message-renderer:has(yt-live-chat-author-badge-rende
     background-color: var(--single-line-chat-bgcolor) !important;
 }
 
-div#items>yt-live-chat-text-message-renderer:has(yt-live-chat-author-badge-renderer[type="moderator"]) span#message {
+div#items>yt-live-chat-text-message-renderer[author-type="moderator"] span#message {
     color: var(--single-line-chat-color-moderator) !important;
 }
 
-div#items>yt-live-chat-text-message-renderer:has(yt-live-chat-author-badge-renderer[type="moderator"]) {
+div#items>yt-live-chat-text-message-renderer[author-type="moderator"] {
     background-color: var(--single-line-chat-bgcolor) !important;
 }
 
