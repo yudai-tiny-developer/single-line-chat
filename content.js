@@ -10,11 +10,30 @@ function main(common) {
             document.documentElement.style.setProperty('--single-line-chat-icon', common.value(data.hide_icon, common.default_hide_icon) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-name', common.value(data.hide_name, common.default_hide_name) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-badge', common.value(data.hide_badge, common.default_hide_badge) ? 'none' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-color', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-secondary-text-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-color-sponsor', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-sponsor-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-color-moderator', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-moderator-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-color-owner', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-owner-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-bgcolor', common.value(data.chat_bgcolor, common.default_chat_bgcolor) ? 'var(--yt-live-chat-secondary-background-color)' : 'unset');
+
+            if (common.value(data.chat_color, common.default_chat_color)) {
+                document.documentElement.style.setProperty('--single-line-chat-color', 'var(--yt-live-chat-secondary-text-color)');
+                document.documentElement.style.setProperty('--single-line-chat-color-sponsor', 'var(--yt-live-chat-sponsor-color)');
+                document.documentElement.style.setProperty('--single-line-chat-color-moderator', 'var(--yt-live-chat-moderator-color)');
+                document.documentElement.style.setProperty('--single-line-chat-color-owner', 'var(--yt-live-chat-owner-color)');
+            } else {
+                document.documentElement.style.setProperty('--single-line-chat-color', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-color-sponsor', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-color-moderator', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-color-owner', 'unset');
+            }
+
+            if (common.value(data.chat_bgcolor, common.default_chat_bgcolor)) {
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'rgba(0, 255, 0, 0.05)');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'rgba(0, 0, 255, 0.05)');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'rgba(255, 255, 0, 0.05)');
+            } else {
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'unset');
+            }
         });
     }
 
