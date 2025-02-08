@@ -25,9 +25,9 @@ function main(common) {
 
             if (common.value(data.chat_bgcolor, common.default_chat_bgcolor)) {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor', 'unset');
-                document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'rgba(0, 255, 0, 0.05)');
-                document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'rgba(0, 0, 255, 0.05)');
-                document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'rgba(255, 255, 0, 0.05)');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'rgba(0, 255, 0, 0.1)');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'rgba(0, 0, 255, 0.15)');
+                document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'rgba(255, 255, 0, 0.1)');
             } else {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor', 'unset');
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'unset');
