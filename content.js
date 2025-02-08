@@ -13,9 +13,8 @@ function main(common) {
             document.documentElement.style.setProperty('--single-line-chat-color', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-secondary-text-color)' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-color-sponsor', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-sponsor-color)' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-color-moderator', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-moderator-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-color-owner', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-author-chip-owner-text-color)' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-color-owner', common.value(data.chat_color, common.default_chat_color) ? 'var(--yt-live-chat-owner-color)' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-bgcolor', common.value(data.chat_bgcolor, common.default_chat_bgcolor) ? 'var(--yt-live-chat-secondary-background-color)' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', common.value(data.chat_bgcolor, common.default_chat_bgcolor) ? 'var(--yt-live-chat-owner-color)' : 'unset');
         });
     }
 
