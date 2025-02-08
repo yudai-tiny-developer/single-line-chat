@@ -54,7 +54,3 @@ div#items>yt-live-chat-text-message-renderer[author-type="owner"] span#message {
 div#items>yt-live-chat-text-message-renderer[author-type="owner"] {
     background-color: var(--single-line-chat-bgcolor) !important;
 }
-
-div#items>yt-live-chat-text-message-renderer[author-type="owner"] div#menu {
-    color: #0f0f0f !important;
-}
