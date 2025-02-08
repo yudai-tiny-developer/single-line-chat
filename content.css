@@ -2,11 +2,18 @@
     --single-line-chat-icon: none;
     --single-line-chat-name: none;
     --single-line-chat-badge: none;
-    --single-line-chat-color: var(--yt-spec-text-secondary);
-    --single-line-chat-color-sponsor: var(--yt-live-chat-sponsor-color);
-    --single-line-chat-color-moderator: var(--yt-live-chat-moderator-color);
-    --single-line-chat-color-owner: var(--yt-live-chat-owner-color);
-    --single-line-chat-bgcolor: var(--yt-spec-badge-chip-background);
+
+    --single-line-chat-color: none;
+    --single-line-chat-bgcolor: none;
+
+    --single-line-chat-color-sponsor: none;
+    --single-line-chat-bgcolor-sponsor: none;
+
+    --single-line-chat-color-moderator: none;
+    --single-line-chat-bgcolor-moderator: none;
+
+    --single-line-chat-color-owner: none;
+    --single-line-chat-bgcolor-owner: none;
 }
 
 div#items>yt-live-chat-text-message-renderer:not(:hover) div#content {
@@ -31,12 +38,16 @@ div#items>yt-live-chat-text-message-renderer span#message {
     color: var(--single-line-chat-color) !important;
 }
 
+div#items>yt-live-chat-text-message-renderer {
+    background-color: var(--single-line-chat-bgcolor) !important;
+}
+
 div#items>yt-live-chat-text-message-renderer:has(yt-live-chat-author-badge-renderer) span#message {
     color: var(--single-line-chat-color-sponsor) !important;
 }
 
 div#items>yt-live-chat-text-message-renderer:has(yt-live-chat-author-badge-renderer) {
-    background-color: var(--single-line-chat-bgcolor) !important;
+    background-color: var(--single-line-chat-bgcolor-sponsor) !important;
 }
 
 div#items>yt-live-chat-text-message-renderer[author-type="moderator"] span#message {
@@ -44,7 +55,7 @@ div#items>yt-live-chat-text-message-renderer[author-type="moderator"] span#messa
 }
 
 div#items>yt-live-chat-text-message-renderer[author-type="moderator"] {
-    background-color: var(--single-line-chat-bgcolor) !important;
+    background-color: var(--single-line-chat-bgcolor-moderator) !important;
 }
 
 div#items>yt-live-chat-text-message-renderer[author-type="owner"] span#message {
@@ -52,5 +63,5 @@ div#items>yt-live-chat-text-message-renderer[author-type="owner"] span#message {
 }
 
 div#items>yt-live-chat-text-message-renderer[author-type="owner"] {
-    background-color: var(--single-line-chat-bgcolor) !important;
+    background-color: var(--single-line-chat-bgcolor-owner) !important;
 }
