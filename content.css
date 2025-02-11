@@ -16,7 +16,8 @@
     --single-line-chat-bgcolor-owner: none;
 }
 
-div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) div#content {
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) div#content,
+div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-redemption-announcement-renderer:not(:hover) div#content {
     text-overflow: ellipsis !important;
     overflow: hidden !important;
     white-space: nowrap !important;
