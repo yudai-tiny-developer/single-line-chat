@@ -34,6 +34,7 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not
     display: var(--single-line-chat-badge) !important;
 }
 
+/* General */
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[author-type=""] span#message {
     color: var(--single-line-chat-color) !important;
 }
@@ -42,6 +43,7 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[aut
     background-color: var(--single-line-chat-bgcolor) !important;
 }
 
+/* Member */
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[author-type="member"] span#message {
     color: var(--single-line-chat-color-sponsor) !important;
 }
@@ -50,6 +52,7 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[aut
     background-color: var(--single-line-chat-bgcolor-sponsor) !important;
 }
 
+/* Moderator */
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[author-type="moderator"] span#message {
     color: var(--single-line-chat-color-moderator) !important;
 }
@@ -58,6 +61,7 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[aut
     background-color: var(--single-line-chat-bgcolor-moderator) !important;
 }
 
+/* Owner */
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[author-type="owner"] span#message {
     color: var(--single-line-chat-color-owner) !important;
 }
@@ -66,7 +70,55 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer[aut
     background-color: var(--single-line-chat-bgcolor-owner) !important;
 }
 
+/* Membership Gift Redemption */
 div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-redemption-announcement-renderer:not(:hover) div#content span#author-name,
 div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-redemption-announcement-renderer:not(:hover) div#content yt-formatted-string#message {
     display: none !important;
+}
+
+/* Super Chat */
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-paid-message-renderer:not(:hover) div#content {
+    display: none !important;
+}
+
+/* Milestone Chat */
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-membership-item-renderer:not(:hover) div#header-subtext,
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-membership-item-renderer:not(:hover) deiv#header-primary-text,
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-membership-item-renderer:not(:hover) div#content {
+    display: none !important;
+}
+
+/* Membership Join */
+div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-header-renderer:not(:hover) div#content {
+    display: none !important;
+}
+
+/* Membership Gift */
+div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-purchase-announcement-renderer:not(:hover) div#content {
+    align-items: center !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-purchase-announcement-renderer:not(:hover) div#primary-text {
+    display: none !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>ytd-sponsorships-live-chat-gift-purchase-announcement-renderer:not(:hover) yt-img-shadow.rhs-image {
+    height: 56px !important;
+    object-fit: contain !important;
+}
+
+/* Engagement */
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-viewer-engagement-message-renderer:not(:hover) div#card {
+    align-items: center !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-viewer-engagement-message-renderer:not(:hover) yt-formatted-string#message {
+    display: none !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-viewer-engagement-message-renderer:not(:hover) div#action-button {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
 }
