@@ -37,9 +37,6 @@ function main(common) {
         });
     }
 
-    chrome.storage.onChanged.addListener(() => {
-        loadSettings();
-    });
-
+    chrome.storage.onChanged.addListener(loadSettings);
     loadSettings();
 }
