@@ -2,6 +2,7 @@
     --single-line-chat-icon: none;
     --single-line-chat-name: none;
     --single-line-chat-badge: none;
+    --single-line-chat-xp: none;
 
     --single-line-chat-color: none;
     --single-line-chat-bgcolor: none;
@@ -32,6 +33,10 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not
 
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) span#chat-badges {
     display: var(--single-line-chat-badge) !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-button-view-model:has(button.yt-spec-button-shape-next--enable-backdrop-filter-experiment) {
+    display: var(--single-line-chat-xp) !important;
 }
 
 /* General */

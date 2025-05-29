@@ -10,6 +10,7 @@ function main(common) {
             document.documentElement.style.setProperty('--single-line-chat-icon', common.value(data.hide_icon, common.default_hide_icon) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-name', common.value(data.hide_name, common.default_hide_name) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-badge', common.value(data.hide_badge, common.default_hide_badge) ? 'none' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-xp', common.value(data.hide_xp, common.default_hide_xp) ? 'none' : 'flex');
 
             if (common.value(data.chat_color, common.default_chat_color)) {
                 document.documentElement.style.setProperty('--single-line-chat-color', 'var(--yt-live-chat-secondary-text-color)');
