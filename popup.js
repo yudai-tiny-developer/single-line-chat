@@ -38,6 +38,11 @@ function main(common, settings, progress, data) {
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, 'Hide chat XP'));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_xp', data.hide_xp, common.default_hide_xp, common.value));
+        container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
         row.appendChild(settings.createLabel(cell_class, 'Change message color'));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'chat_color', data.chat_color, common.default_chat_color, common.value));
         container.appendChild(row);
