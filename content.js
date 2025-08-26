@@ -64,16 +64,24 @@ function main(common) {
     function replaceIdToName(author) {
         const id = author.textContent;
         if (id.startsWith('@')) {
-            author.setAttribute('author-id', id);
-
-            const name = sessionStorage.getItem(id);
-            if (name) {
-                author.firstChild.textContent = name;
+            const attr_id = author.getAttribute('author-id');
+            if (attr_id) {
+                const name = sessionStorage.getItem(attr_id);
+                if (name) {
+                    author.firstChild.textContent = name;
+                }
             } else {
-                chrome.runtime.sendMessage({ id }).then(response => {
-                    sessionStorage.setItem(id, response.name);
-                    author.firstChild.textContent = response.name;
-                });
+                author.setAttribute('author-id', id);
+
+                const name = sessionStorage.getItem(id);
+                if (name) {
+                    author.firstChild.textContent = name;
+                } else {
+                    chrome.runtime.sendMessage({ id }).then(response => {
+                        sessionStorage.setItem(id, response.name);
+                        author.firstChild.textContent = response.name;
+                    });
+                }
             }
         }
     }
