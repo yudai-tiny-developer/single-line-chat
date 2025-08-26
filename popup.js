@@ -23,6 +23,11 @@ function main(common, settings, progress, data) {
 
     {
         const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, 'Single line'));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'single_line', data.single_line, common.default_single_line, common.value));
+        container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
         row.appendChild(settings.createLabel(cell_class, 'Hide author photo'));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_icon', data.hide_icon, common.default_hide_icon, common.value));
         container.appendChild(row);
@@ -30,6 +35,11 @@ function main(common, settings, progress, data) {
         const row = settings.createRow(row_class);
         row.appendChild(settings.createLabel(cell_class, 'Hide author name'));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_name', data.hide_name, common.default_hide_name, common.value));
+        container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, 'Replace @handle to display name'));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'use_displayname', data.use_displayname, common.default_use_displayname, common.value));
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
