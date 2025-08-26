@@ -69,16 +69,18 @@ function main(common) {
         const author = n.querySelector('span#author-name');
         if (author) {
             const id = author.textContent;
-            author.setAttribute('author-id', id);
+            if (id.startsWith('@')) {
+                author.setAttribute('author-id', id);
 
-            const name = sessionStorage.getItem(id);
-            if (name) {
-                author.firstChild.textContent = name;
-            } else {
-                chrome.runtime.sendMessage({ id }).then(response => {
-                    sessionStorage.setItem(id, response.name);
-                    author.firstChild.textContent = response.name;
-                });
+                const name = sessionStorage.getItem(id);
+                if (name) {
+                    author.firstChild.textContent = name;
+                } else {
+                    chrome.runtime.sendMessage({ id }).then(response => {
+                        sessionStorage.setItem(id, response.name);
+                        author.firstChild.textContent = response.name;
+                    });
+                }
             }
         }
     }
