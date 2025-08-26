@@ -41,57 +41,47 @@ function main(common) {
             }
 
             if (common.value(data.use_displayname, common.default_use_displayname)) {
-                for (const n of items.querySelectorAll('YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER')) {
+                for (const n of items.querySelectorAll('span#author-name')) {
                     replaceIdToName(n);
                 }
 
-                observer = observer ?? new MutationObserver(async (mutations, observer) => {
-                    for (const m of mutations) {
-                        for (const n of m.addedNodes) {
-                            if (n.nodeName === 'YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER') {
-                                replaceIdToName(n);
-                            }
-                        }
+                observer = observer ?? new MutationObserver((mutations, observer) => {
+                    for (const n of items.querySelectorAll('span#author-name')) {
+                        replaceIdToName(n);
                     }
                 })
                 observer.observe(items, { childList: true });
             } else {
                 observer?.disconnect();
 
-                for (const n of items.querySelectorAll('YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER')) {
+                for (const n of items.querySelectorAll('span#author-name')) {
                     revertNameToId(n);
                 }
             }
         });
     }
 
-    async function replaceIdToName(n) {
-        const author = n.querySelector('span#author-name');
-        if (author) {
-            const id = author.textContent;
-            if (id.startsWith('@')) {
-                author.setAttribute('author-id', id);
+    function replaceIdToName(author) {
+        const id = author.textContent;
+        if (id.startsWith('@')) {
+            author.setAttribute('author-id', id);
 
-                const name = sessionStorage.getItem(id);
-                if (name) {
-                    author.firstChild.textContent = name;
-                } else {
-                    chrome.runtime.sendMessage({ id }).then(response => {
-                        sessionStorage.setItem(id, response.name);
-                        author.firstChild.textContent = response.name;
-                    });
-                }
+            const name = sessionStorage.getItem(id);
+            if (name) {
+                author.firstChild.textContent = name;
+            } else {
+                chrome.runtime.sendMessage({ id }).then(response => {
+                    sessionStorage.setItem(id, response.name);
+                    author.firstChild.textContent = response.name;
+                });
             }
         }
     }
 
-    async function revertNameToId(n) {
-        const author = n.querySelector('span#author-name');
-        if (author) {
-            const id = author.getAttribute('author-id');
-            if (id) {
-                author.firstChild.textContent = id;
-            }
+    function revertNameToId(author) {
+        const id = author.getAttribute('author-id');
+        if (id) {
+            author.firstChild.textContent = id;
         }
     }
 
