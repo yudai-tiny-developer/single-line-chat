@@ -1,4 +1,8 @@
 :root {
+    --single-line-chat-text-overflow: none;
+    --single-line-chat-overflow: none;
+    --single-line-chat-white-space: none;
+
     --single-line-chat-icon: none;
     --single-line-chat-name: none;
     --single-line-chat-badge: none;
@@ -18,9 +22,9 @@
 }
 
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) div#content {
-    text-overflow: ellipsis !important;
-    overflow: hidden !important;
-    white-space: nowrap !important;
+    text-overflow: var(--single-line-chat-text-overflow) !important;
+    overflow: var(--single-line-chat-overflow) !important;
+    white-space: var(--single-line-chat-white-space) !important;
 }
 
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-img-shadow#author-photo {

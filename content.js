@@ -7,6 +7,10 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 function main(common) {
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
+            document.documentElement.style.setProperty('--single-line-chat-text-overflow', common.value(data.single_line, common.default_single_line) ? 'ellipsis' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-overflow', common.value(data.single_line, common.default_single_line) ? 'hidden' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-white-space', common.value(data.single_line, common.default_single_line) ? 'nowrap' : 'unset');
+
             document.documentElement.style.setProperty('--single-line-chat-icon', common.value(data.hide_icon, common.default_hide_icon) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-name', common.value(data.hide_name, common.default_hide_name) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-badge', common.value(data.hide_badge, common.default_hide_badge) ? 'none' : 'unset');
@@ -35,8 +39,63 @@ function main(common) {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'unset');
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'unset');
             }
+
+            if (common.value(data.use_displayname, common.default_use_displayname)) {
+                for (const n of items.querySelectorAll('YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER')) {
+                    replaceIdToName(n);
+                }
+
+                observer = observer ?? new MutationObserver(async (mutations, observer) => {
+                    for (const m of mutations) {
+                        for (const n of m.addedNodes) {
+                            if (n.nodeName === 'YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER') {
+                                replaceIdToName(n);
+                            }
+                        }
+                    }
+                })
+                observer.observe(items, { childList: true });
+            } else {
+                observer?.disconnect();
+
+                for (const n of items.querySelectorAll('YT-LIVE-CHAT-TEXT-MESSAGE-RENDERER')) {
+                    revertNameToId(n);
+                }
+            }
         });
     }
+
+    async function replaceIdToName(n) {
+        const author = n.querySelector('span#author-name');
+        if (author) {
+            const id = author.textContent;
+            author.setAttribute('author-id', id);
+
+            const name = sessionStorage.getItem(id);
+            if (name) {
+                author.firstChild.textContent = name;
+            } else {
+                chrome.runtime.sendMessage({ id }).then(response => {
+                    sessionStorage.setItem(id, response.name);
+                    author.firstChild.textContent = response.name;
+                });
+            }
+        }
+    }
+
+    async function revertNameToId(n) {
+        const author = n.querySelector('span#author-name');
+        if (author) {
+            const id = author.getAttribute('author-id');
+            if (id) {
+                author.firstChild.textContent = id;
+            }
+        }
+    }
+
+    const items = document.body.querySelector('div#items');
+
+    let observer;
 
     chrome.storage.onChanged.addListener(loadSettings);
     loadSettings();
