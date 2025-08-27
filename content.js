@@ -7,9 +7,29 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 function main(common) {
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
-            document.documentElement.style.setProperty('--single-line-chat-text-overflow', common.value(data.single_line, common.default_single_line) ? 'ellipsis' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-overflow', common.value(data.single_line, common.default_single_line) ? 'hidden' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-white-space', common.value(data.single_line, common.default_single_line) ? 'nowrap' : 'unset');
+            if (common.value(data.single_line, common.default_single_line)) {
+                document.documentElement.style.setProperty('--single-line-chat-text-overflow', 'ellipsis');
+                document.documentElement.style.setProperty('--single-line-chat-overflow', 'hidden');
+                document.documentElement.style.setProperty('--single-line-chat-white-space', 'nowrap');
+                document.documentElement.style.setProperty('--single-line-chat-display-block', 'none');
+                document.documentElement.style.setProperty('--single-line-chat-display-inline', 'none');
+                document.documentElement.style.setProperty('--single-line-chat-align-items', 'center');
+                document.documentElement.style.setProperty('--single-line-chat-height', '56px');
+                document.documentElement.style.setProperty('--single-line-chat-object-fit', 'contain');
+                document.documentElement.style.setProperty('--single-line-chat-padding-top', '0px');
+                document.documentElement.style.setProperty('--single-line-chat-padding-bottom', '0px');
+            } else {
+                document.documentElement.style.setProperty('--single-line-chat-text-overflow', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-overflow', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-white-space', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-display-block', 'block');
+                document.documentElement.style.setProperty('--single-line-chat-display-inline', 'inline');
+                document.documentElement.style.setProperty('--single-line-chat-align-items', 'normal');
+                document.documentElement.style.setProperty('--single-line-chat-height', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-object-fit', 'unset');
+                document.documentElement.style.setProperty('--single-line-chat-padding-top', '12px');
+                document.documentElement.style.setProperty('--single-line-chat-padding-bottom', '8px');
+            }
 
             document.documentElement.style.setProperty('--single-line-chat-icon', common.value(data.hide_icon, common.default_hide_icon) ? 'none' : 'unset');
             document.documentElement.style.setProperty('--single-line-chat-name', common.value(data.hide_name, common.default_hide_name) ? 'none' : 'unset');
@@ -64,16 +84,24 @@ function main(common) {
     function replaceIdToName(author) {
         const id = author.textContent;
         if (id.startsWith('@')) {
-            author.setAttribute('author-id', id);
-
-            const name = sessionStorage.getItem(id);
-            if (name) {
-                author.firstChild.textContent = name;
+            const attr_id = author.getAttribute('author-id');
+            if (attr_id) {
+                const name = sessionStorage.getItem(attr_id);
+                if (name) {
+                    author.firstChild.textContent = name;
+                }
             } else {
-                chrome.runtime.sendMessage({ id }).then(response => {
-                    sessionStorage.setItem(id, response.name);
-                    author.firstChild.textContent = response.name;
-                });
+                author.setAttribute('author-id', id);
+
+                const name = sessionStorage.getItem(id);
+                if (name) {
+                    author.firstChild.textContent = name;
+                } else {
+                    chrome.runtime.sendMessage({ id }).then(response => {
+                        sessionStorage.setItem(id, response.name);
+                        author.firstChild.textContent = response.name;
+                    });
+                }
             }
         }
     }
