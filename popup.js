@@ -39,32 +39,6 @@ function main(common, settings, progress, data) {
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
-        row.appendChild(settings.createLabel(cell_class, 'Replace @handle to display name'));
-        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'use_displayname', data.use_displayname, common.default_use_displayname, common.value));
-        container.appendChild(row);
-        {
-            const desc_label = settings.createLabel(desc_class, 'It may take some time for this setting to take effect after being enabled to prevent excessive access to YouTube.');
-            const input = row.querySelector('input');
-            if (input.checked) {
-                desc_label.style.display = 'block';
-            } else {
-                desc_label.style.display = 'none';
-            }
-            input.addEventListener('change', () => {
-                if (input.checked) {
-                    desc_label.style.display = 'block';
-                } else {
-                    desc_label.style.display = 'none';
-                }
-            });
-
-            const desc_row = settings.createRow(row_class);
-            desc_row.appendChild(desc_label);
-            desc_row.appendChild(settings.createLabel(cell_class, ''));
-            container.appendChild(desc_row);
-        }
-    } {
-        const row = settings.createRow(row_class);
         row.appendChild(settings.createLabel(cell_class, 'Hide chat badges'));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_badge', data.hide_badge, common.default_hide_badge, common.value));
         container.appendChild(row);
