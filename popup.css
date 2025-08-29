@@ -20,6 +20,14 @@ div.cell {
     padding: 8px;
 }
 
+div.desc {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 16px;
+    text-wrap: wrap;
+    width: 160px;
+}
+
 div.footer {
     display: table-caption;
     caption-side: bottom;
@@ -109,6 +117,11 @@ div#reset_progress.done {
         fill: rgb(0, 0, 0);
     }
 
+    div.desc {
+        color: rgb(249, 73, 73);
+        fill: rgb(249, 73, 73);
+    }
+
     label.switch {
         background-color: rgb(187, 187, 187);
         border-color: rgb(73, 73, 73);
@@ -157,6 +170,11 @@ div#reset_progress.done {
     div.cell {
         color: rgb(255, 255, 255);
         fill: rgb(255, 255, 255);
+    }
+
+    div.desc {
+        color: rgb(249, 73, 73);
+        fill: rgb(249, 73, 73);
     }
 
     label.switch {

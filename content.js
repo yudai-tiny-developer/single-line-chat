@@ -67,37 +67,24 @@ function main(common) {
     function replaceIdToName(author) {
         const id = author.textContent;
         if (id?.startsWith('@')) {
-            const attr_id = author.getAttribute('author-id');
-            if (attr_id) {
-                try {
-                    const cache = JSON.parse(sessionStorage.getItem(attr_id));
-                    if (cache && cache.name) {
-                        if (Date.now() - cache.date < 86400000) {
-                            author.replaceChild(createHTML(cache.name), author.firstChild);
-                        } else {
-                            chrome.runtime.sendMessage({ id }).then(response => {
-                                sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
-                                author.replaceChild(createHTML(response.name), author.firstChild);
-                            });
-                        }
-                    }
-                } catch {
-                    sessionStorage.clear();
-                }
+            const name = author.getAttribute('author-name');
+            if (name) {
+                author.replaceChild(createHTML(name), author.firstChild);
             } else {
-                author.setAttribute('author-id', id);
-                try {
-                    const cache = JSON.parse(sessionStorage.getItem(id));
-                    if (cache && cache.name && Date.now() - cache.date < 86400000) {
-                        author.replaceChild(createHTML(cache.name), author.firstChild);
-                    } else {
-                        chrome.runtime.sendMessage({ id }).then(response => {
-                            sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
-                            author.replaceChild(createHTML(response.name), author.firstChild);
-                        });
-                    }
-                } catch {
-                    sessionStorage.clear();
+                const cache = JSON.parse(localStorage.getItem(id));
+                if (cache && cache.name && Date.now() < cache.retry_date) {
+                    author.setAttribute('author-id', id);
+                    author.setAttribute('author-name', cache.name);
+                    author.replaceChild(createHTML(cache.name), author.firstChild);
+                } else {
+                    requestQueue.push({
+                        id,
+                        apply: name => {
+                            author.setAttribute('author-id', id);
+                            author.setAttribute('author-name', name);
+                            author.replaceChild(createHTML(name), author.firstChild);
+                        }
+                    });
                 }
             }
         }
@@ -194,6 +181,26 @@ function main(common) {
     let items_observer;
     let banner_observer;
     let ticker_observer;
+
+    const RETRY_AFTER = 7 * 24 * 60 * 60 * 1000;
+    const requestQueue = [];
+
+    setInterval(() => {
+        if (requestQueue.length === 0) return;
+
+        const request = requestQueue.shift();
+        if (!request) return;
+
+        const cache = JSON.parse(localStorage.getItem(request.id));
+        if (cache && cache.name && Date.now() < cache.retry_date) {
+            request.apply(cache.name);
+        } else {
+            chrome.runtime.sendMessage({ id: request.id }).then(response => {
+                request.apply(response.name);
+                localStorage.setItem(request.id, JSON.stringify({ name: response.name, retry_date: Date.now() + RETRY_AFTER + RETRY_AFTER * Math.random() }));
+            });
+        }
+    }, 500);
 
     chrome.storage.onChanged.addListener(loadSettings);
     loadSettings();
