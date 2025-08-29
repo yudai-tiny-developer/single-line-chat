@@ -60,47 +60,44 @@ function main(common) {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'unset');
             }
 
-            if (common.value(data.use_displayname, common.default_use_displayname)) {
-                for (const n of items.querySelectorAll('span#author-name')) {
-                    replaceIdToName(n);
-                }
-
-                observer = observer ?? new MutationObserver((mutations, observer) => {
-                    for (const n of items.querySelectorAll('span#author-name')) {
-                        replaceIdToName(n);
-                    }
-                })
-                observer.observe(items, { childList: true });
-            } else {
-                observer?.disconnect();
-
-                for (const n of items.querySelectorAll('span#author-name')) {
-                    revertNameToId(n);
-                }
-            }
+            update_observers(common.value(data.use_displayname, common.default_use_displayname));
         });
     }
 
     function replaceIdToName(author) {
         const id = author.textContent;
-        if (id.startsWith('@')) {
+        if (id?.startsWith('@')) {
             const attr_id = author.getAttribute('author-id');
             if (attr_id) {
-                const name = sessionStorage.getItem(attr_id);
-                if (name) {
-                    author.firstChild.textContent = name;
+                try {
+                    const cache = JSON.parse(sessionStorage.getItem(attr_id));
+                    if (cache && cache.name) {
+                        if (Date.now() - cache.date < 86400000) {
+                            author.replaceChild(createHTML(cache.name), author.firstChild);
+                        } else {
+                            chrome.runtime.sendMessage({ id }).then(response => {
+                                sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
+                                author.replaceChild(createHTML(response.name), author.firstChild);
+                            });
+                        }
+                    }
+                } catch {
+                    sessionStorage.clear();
                 }
             } else {
                 author.setAttribute('author-id', id);
-
-                const name = sessionStorage.getItem(id);
-                if (name) {
-                    author.firstChild.textContent = name;
-                } else {
-                    chrome.runtime.sendMessage({ id }).then(response => {
-                        sessionStorage.setItem(id, response.name);
-                        author.firstChild.textContent = response.name;
-                    });
+                try {
+                    const cache = JSON.parse(sessionStorage.getItem(id));
+                    if (cache && cache.name && Date.now() - cache.date < 86400000) {
+                        author.replaceChild(createHTML(cache.name), author.firstChild);
+                    } else {
+                        chrome.runtime.sendMessage({ id }).then(response => {
+                            sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
+                            author.replaceChild(createHTML(response.name), author.firstChild);
+                        });
+                    }
+                } catch {
+                    sessionStorage.clear();
                 }
             }
         }
@@ -113,9 +110,90 @@ function main(common) {
         }
     }
 
-    const items = document.body.querySelector('div#items');
+    function createHTML(string) {
+        const span = document.createElement('span');
+        span.innerHTML = string;
+        return span;
+    }
 
-    let observer;
+    function update_items_observer(use_displayname) {
+        const items = document.body.querySelector('div#items');
+
+        items_observer?.disconnect();
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            items_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
+            items_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_banner_observer(use_displayname) {
+        const items = document.body.querySelector('yt-live-chat-banner-manager');
+
+        banner_observer?.disconnect();
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            banner_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
+            banner_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_ticker_observer(use_displayname) {
+        const items = document.body.querySelector('div#ticker-items');
+
+        ticker_observer?.disconnect();
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            ticker_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
+            ticker_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_observers(use_displayname) {
+        update_items_observer(use_displayname);
+        update_banner_observer(use_displayname);
+        update_ticker_observer(use_displayname);
+    }
+
+    let items_observer;
+    let banner_observer;
+    let ticker_observer;
 
     chrome.storage.onChanged.addListener(loadSettings);
     loadSettings();
