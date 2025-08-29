@@ -120,17 +120,17 @@ function main(common) {
         const items = document.body.querySelector('div#items');
 
         items_observer?.disconnect();
-        items_observer = new MutationObserver(() => {
-            for (const n of items.querySelectorAll('span')) {
-                replaceIdToName(n);
-            }
-        });
 
         if (use_displayname) {
             for (const n of items.querySelectorAll('span')) {
                 replaceIdToName(n);
             }
 
+            items_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
             items_observer.observe(items, { childList: true });
         } else {
             for (const n of items.querySelectorAll('span')) {
@@ -143,17 +143,17 @@ function main(common) {
         const items = document.body.querySelector('yt-live-chat-banner-manager');
 
         banner_observer?.disconnect();
-        banner_observer = new MutationObserver(() => {
-            for (const n of items.querySelectorAll('span')) {
-                replaceIdToName(n);
-            }
-        });
 
         if (use_displayname) {
             for (const n of items.querySelectorAll('span')) {
                 replaceIdToName(n);
             }
 
+            banner_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
             banner_observer.observe(items, { childList: true });
         } else {
             for (const n of items.querySelectorAll('span')) {
@@ -166,17 +166,17 @@ function main(common) {
         const items = document.body.querySelector('div#ticker-items');
 
         ticker_observer?.disconnect();
-        ticker_observer = new MutationObserver(() => {
-            for (const n of items.querySelectorAll('span')) {
-                replaceIdToName(n);
-            }
-        });
 
         if (use_displayname) {
             for (const n of items.querySelectorAll('span')) {
                 replaceIdToName(n);
             }
 
+            ticker_observer = new MutationObserver(() => {
+                for (const n of items.querySelectorAll('span')) {
+                    replaceIdToName(n);
+                }
+            });
             ticker_observer.observe(items, { childList: true });
         } else {
             for (const n of items.querySelectorAll('span')) {
