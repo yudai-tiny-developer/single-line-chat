@@ -2,7 +2,6 @@ export const storage = [
     'single_line',
     'hide_icon',
     'hide_name',
-    'use_displayname',
     'hide_badge',
     'hide_xp',
     'chat_color',
@@ -12,7 +11,6 @@ export const storage = [
 export const default_single_line = true;
 export const default_hide_icon = false;
 export const default_hide_name = false;
-export const default_use_displayname = true;
 export const default_hide_badge = false;
 export const default_hide_xp = false;
 export const default_chat_color = true;
