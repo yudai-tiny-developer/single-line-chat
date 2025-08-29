@@ -61,12 +61,12 @@ function main(common) {
             }
 
             if (common.value(data.use_displayname, common.default_use_displayname)) {
-                for (const n of items.querySelectorAll('span#author-name')) {
+                for (const n of items.querySelectorAll('span')) {
                     replaceIdToName(n);
                 }
 
                 observer = observer ?? new MutationObserver((mutations, observer) => {
-                    for (const n of items.querySelectorAll('span#author-name')) {
+                    for (const n of items.querySelectorAll('span')) {
                         replaceIdToName(n);
                     }
                 })
@@ -74,7 +74,7 @@ function main(common) {
             } else {
                 observer?.disconnect();
 
-                for (const n of items.querySelectorAll('span#author-name')) {
+                for (const n of items.querySelectorAll('span')) {
                     revertNameToId(n);
                 }
             }
@@ -83,24 +83,38 @@ function main(common) {
 
     function replaceIdToName(author) {
         const id = author.textContent;
-        if (id.startsWith('@')) {
+        if (id?.startsWith('@')) {
             const attr_id = author.getAttribute('author-id');
             if (attr_id) {
-                const name = sessionStorage.getItem(attr_id);
-                if (name) {
-                    author.firstChild.textContent = name;
+                try {
+                    const cache = JSON.parse(sessionStorage.getItem(attr_id));
+                    if (cache && cache.name) {
+                        if (Date.now() - cache.date < 86400000) {
+                            author.replaceChild(createHTML(cache.name), author.firstChild);
+                        } else {
+                            chrome.runtime.sendMessage({ id }).then(response => {
+                                sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
+                                author.replaceChild(createHTML(response.name), author.firstChild);
+                            });
+                        }
+                    }
+                } catch {
+                    sessionStorage.clear();
                 }
             } else {
                 author.setAttribute('author-id', id);
-
-                const name = sessionStorage.getItem(id);
-                if (name) {
-                    author.firstChild.textContent = name;
-                } else {
-                    chrome.runtime.sendMessage({ id }).then(response => {
-                        sessionStorage.setItem(id, response.name);
-                        author.firstChild.textContent = response.name;
-                    });
+                try {
+                    const cache = JSON.parse(sessionStorage.getItem(id));
+                    if (cache && cache.name && Date.now() - cache.date < 86400000) {
+                        author.replaceChild(createHTML(cache.name), author.firstChild);
+                    } else {
+                        chrome.runtime.sendMessage({ id }).then(response => {
+                            sessionStorage.setItem(id, JSON.stringify({ name: response.name, date: Date.now() }));
+                            author.replaceChild(createHTML(response.name), author.firstChild);
+                        });
+                    }
+                } catch {
+                    sessionStorage.clear();
                 }
             }
         }
@@ -111,6 +125,12 @@ function main(common) {
         if (id) {
             author.firstChild.textContent = id;
         }
+    }
+
+    const createHTML = (string) => {
+        const span = document.createElement('span');
+        span.innerHTML = string;
+        return span;
     }
 
     const items = document.body.querySelector('div#items');
