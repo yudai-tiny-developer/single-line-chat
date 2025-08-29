@@ -60,24 +60,7 @@ function main(common) {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-owner', 'unset');
             }
 
-            if (common.value(data.use_displayname, common.default_use_displayname)) {
-                for (const n of items.querySelectorAll('span')) {
-                    replaceIdToName(n);
-                }
-
-                observer = observer ?? new MutationObserver((mutations, observer) => {
-                    for (const n of items.querySelectorAll('span')) {
-                        replaceIdToName(n);
-                    }
-                })
-                observer.observe(items, { childList: true });
-            } else {
-                observer?.disconnect();
-
-                for (const n of items.querySelectorAll('span')) {
-                    revertNameToId(n);
-                }
-            }
+            update_observers(common.value(data.use_displayname, common.default_use_displayname));
         });
     }
 
@@ -127,15 +110,90 @@ function main(common) {
         }
     }
 
-    const createHTML = (string) => {
+    function createHTML(string) {
         const span = document.createElement('span');
         span.innerHTML = string;
         return span;
     }
 
-    const items = document.body.querySelector('div#items');
+    function update_items_observer(use_displayname) {
+        const items = document.body.querySelector('div#items');
 
-    let observer;
+        items_observer?.disconnect();
+        items_observer = new MutationObserver(() => {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+        });
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            items_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_banner_observer(use_displayname) {
+        const items = document.body.querySelector('yt-live-chat-banner-manager');
+
+        banner_observer?.disconnect();
+        banner_observer = new MutationObserver(() => {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+        });
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            banner_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_ticker_observer(use_displayname) {
+        const items = document.body.querySelector('div#ticker-items');
+
+        ticker_observer?.disconnect();
+        ticker_observer = new MutationObserver(() => {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+        });
+
+        if (use_displayname) {
+            for (const n of items.querySelectorAll('span')) {
+                replaceIdToName(n);
+            }
+
+            ticker_observer.observe(items, { childList: true });
+        } else {
+            for (const n of items.querySelectorAll('span')) {
+                revertNameToId(n);
+            }
+        }
+    }
+
+    function update_observers(use_displayname) {
+        update_items_observer(use_displayname);
+        update_banner_observer(use_displayname);
+        update_ticker_observer(use_displayname);
+    }
+
+    let items_observer;
+    let banner_observer;
+    let ticker_observer;
 
     chrome.storage.onChanged.addListener(loadSettings);
     loadSettings();
