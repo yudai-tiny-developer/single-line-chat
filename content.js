@@ -186,19 +186,22 @@ function main(common) {
     const requestQueue = [];
 
     setInterval(() => {
-        if (requestQueue.length === 0) return;
+        for (; ;) {
+            if (requestQueue.length === 0) return;
 
-        const request = requestQueue.shift();
-        if (!request) return;
+            const request = requestQueue.shift();
+            if (!request) return;
 
-        const cache = JSON.parse(localStorage.getItem(request.id));
-        if (cache && cache.name && Date.now() < cache.retry_date) {
-            request.apply(cache.name);
-        } else {
-            chrome.runtime.sendMessage({ id: request.id }).then(response => {
-                request.apply(response.name);
-                localStorage.setItem(request.id, JSON.stringify({ name: response.name, retry_date: Date.now() + RETRY_AFTER + RETRY_AFTER * Math.random() }));
-            });
+            const cache = JSON.parse(localStorage.getItem(request.id));
+            if (cache && cache.name && Date.now() < cache.retry_date) {
+                request.apply(cache.name);
+            } else {
+                chrome.runtime.sendMessage({ id: request.id }).then(response => {
+                    request.apply(response.name);
+                    localStorage.setItem(request.id, JSON.stringify({ name: response.name, retry_date: Date.now() + RETRY_AFTER + RETRY_AFTER * Math.random() }));
+                });
+                return;
+            }
         }
     }, 500);
 
