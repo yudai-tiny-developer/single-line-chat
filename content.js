@@ -7,7 +7,15 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 function main(common) {
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
-            if (common.value(data.single_line, common.default_single_line)) {
+            const single_line = common.value(data.single_line, common.default_single_line);
+            const hide_icon = common.value(data.hide_icon, common.default_hide_icon);
+            const hide_name = common.value(data.hide_name, common.default_hide_name);
+            const hide_badge = common.value(data.hide_badge, common.default_hide_badge);
+            const hide_xp = common.value(data.hide_xp, common.default_hide_xp);
+            const chat_color = common.value(data.chat_color, common.default_chat_color);
+            const chat_bgcolor = common.value(data.chat_bgcolor, common.default_chat_bgcolor);
+
+            if (single_line) {
                 document.documentElement.style.setProperty('--single-line-chat-text-overflow', 'ellipsis');
                 document.documentElement.style.setProperty('--single-line-chat-overflow', 'hidden');
                 document.documentElement.style.setProperty('--single-line-chat-white-space', 'nowrap');
@@ -31,12 +39,18 @@ function main(common) {
                 document.documentElement.style.setProperty('--single-line-chat-padding-bottom', '8px');
             }
 
-            document.documentElement.style.setProperty('--single-line-chat-icon', common.value(data.hide_icon, common.default_hide_icon) ? 'none' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-name', common.value(data.hide_name, common.default_hide_name) ? 'none' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-badge', common.value(data.hide_badge, common.default_hide_badge) ? 'none' : 'unset');
-            document.documentElement.style.setProperty('--single-line-chat-xp', common.value(data.hide_xp, common.default_hide_xp) ? 'none' : 'flex');
+            document.documentElement.style.setProperty('--single-line-chat-icon', hide_icon ? 'none' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-name', hide_name ? 'none' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-badge', hide_badge ? 'none' : 'unset');
+            document.documentElement.style.setProperty('--single-line-chat-xp', hide_xp ? 'none' : 'flex');
 
-            if (common.value(data.chat_color, common.default_chat_color)) {
+            if (hide_name && hide_badge) {
+                document.documentElement.style.setProperty('--single-line-chat-margin', '0px');
+            } else {
+                document.documentElement.style.setProperty('--single-line-chat-margin', 'var(--yt-live-chat-author-chip-margin-right, 8px)');
+            }
+
+            if (chat_color) {
                 document.documentElement.style.setProperty('--single-line-chat-color', 'var(--yt-live-chat-secondary-text-color)');
                 document.documentElement.style.setProperty('--single-line-chat-color-sponsor', 'var(--yt-live-chat-sponsor-color)');
                 document.documentElement.style.setProperty('--single-line-chat-color-moderator', 'var(--yt-live-chat-moderator-color)');
@@ -48,7 +62,7 @@ function main(common) {
                 document.documentElement.style.setProperty('--single-line-chat-color-owner', 'unset');
             }
 
-            if (common.value(data.chat_bgcolor, common.default_chat_bgcolor)) {
+            if (chat_bgcolor) {
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor', 'unset');
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-sponsor', 'rgba(0, 255, 0, 0.1)');
                 document.documentElement.style.setProperty('--single-line-chat-bgcolor-moderator', 'rgba(0, 0, 255, 0.15)');

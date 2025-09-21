@@ -9,6 +9,7 @@
     --single-line-chat-object-fit: none;
     --single-line-chat-padding-top: none;
     --single-line-chat-padding-bottom: none;
+    --single-line-chat-margin: none;
 
     --single-line-chat-icon: none;
     --single-line-chat-name: none;
@@ -48,6 +49,10 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not
 
 div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-button-view-model:has(button.yt-spec-button-shape-next--enable-backdrop-filter-experiment) {
     display: var(--single-line-chat-xp) !important;
+}
+
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-live-chat-author-chip {
+    margin-right: var(--single-line-chat-margin) !important;
 }
 
 /* General */
