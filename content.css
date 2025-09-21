@@ -34,19 +34,19 @@ div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not
     white-space: var(--single-line-chat-white-space) !important;
 }
 
-div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer yt-img-shadow#author-photo {
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-img-shadow#author-photo {
     display: var(--single-line-chat-icon) !important;
 }
 
-div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer span#author-name {
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) span#author-name {
     display: var(--single-line-chat-name) !important;
 }
 
-div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer span#chat-badges {
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) span#chat-badges {
     display: var(--single-line-chat-badge) !important;
 }
 
-div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer yt-button-view-model:has(button.yt-spec-button-shape-next--enable-backdrop-filter-experiment) {
+div#items.yt-live-chat-item-list-renderer>yt-live-chat-text-message-renderer:not(:hover) yt-button-view-model:has(button.yt-spec-button-shape-next--enable-backdrop-filter-experiment) {
     display: var(--single-line-chat-xp) !important;
 }
 
